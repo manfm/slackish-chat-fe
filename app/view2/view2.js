@@ -3,12 +3,12 @@
 angular.module('myApp.view2', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/view2', {
-    templateUrl: 'view2/view2.html',
-    controller: 'View2Ctrl'
+  $routeProvider.when('/chat', {
+    templateUrl: 'view2/chat.html',
+    controller: 'Chat2Ctrl'
   });
 }])
 
-.controller('View2Ctrl', [function() {
+.controller('Chat2Ctrl', [function() {
 
 }]);

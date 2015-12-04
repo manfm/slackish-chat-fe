@@ -3,12 +3,17 @@
 angular.module('myApp.view1', ['ngRoute'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/view1', {
-    templateUrl: 'view1/view1.html',
-    controller: 'View1Ctrl'
-  });
+  $routeProvider
+    .when('/login', {
+      templateUrl: 'view1/login.html',
+      controller: 'LoginCtrl'
+    })
+    .when('/signup', {
+      templateUrl: 'view1/signup.html',
+      controller: 'LoginCtrl'
+    });
 }])
 
-.controller('View1Ctrl', [function() {
-
+.controller('LoginCtrl', ['$scope', '$location', function($scope, $location) {
+  $scope.user = [];
 }]);
