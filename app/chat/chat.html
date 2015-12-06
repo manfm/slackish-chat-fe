@@ -1,15 +1,23 @@
-  <div class="row">
-    <div class="">
-      <div class="col-md-4">
-        <h2>Chat</h2>
-        <div ng-repeat="user in users">{{user.email}}</div> 
-      </div>
-      <div class="col-md-8">
-        <form class="form-inline">
-          <input type="text" name="Name" placeholder="Name" />
-          <button type="submit" class="submit">Send Message</button>
-          <button class="mainbutton">Request A Quote</button>
-        </form>
+<div class="row">
+  <div class="">
+    <div class="col-sm-4">
+      <h2>Chat {{user.email}}</h2>
+      <div ng-repeat="user in users">
+        <span ng-click="loadMessagesWithUser(user)">{{user.email}}</span>
       </div>
     </div>
+    <div class="col-sm-8">
+      <div>Chat with {{messageForUser.email}}</div>
+      <div ng-repeat="message in messages">
+        <div class="message-field">
+          <span class="message {{message.incomming? 'left':'right'}}">{{message.text}}</span>
+        </div>
+      </div>
+      <form class="form-inline" ng-submit="sendMessage(messageForm)" ng-init="messageForm = {}">
+        <input type="text" name="text" placeholder="message" ng-model="messageForm.text" />
+        <button type="submit" class="submit">Send Message</button>
+        <button class="mainbutton">Request A Quote</button>
+      </form>
+    </div>
   </div>
+</div>
