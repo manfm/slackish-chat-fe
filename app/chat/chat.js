@@ -9,11 +9,11 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket'])
   });
 }])
 
-.factory('mySockets', ['userS', '$http', '$websocket', function(userS, $http, $websocket) {
+.factory('mySockets', ['userS', '$websocket', function(userS, $websocket) {
+  var ws = {};
 
   function init() {
-    console.log('Connecting ...');
-    var ws = $websocket('ws://localhost:5000/websocket');
+    ws = $websocket('ws://localhost:5000/websocket');
 
     var subscribe = ["websocket_rails.subscribe", {
       "data": {
@@ -22,20 +22,28 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket'])
     }];
     ws.send(subscribe);
 
-    ws.onOpen(function(){console.log('Connected to ws')});
-
-    ws.onClose(function(data){console.log(data)});
+    ws.onOpen(function() {
+      console.log('Connected to ws')
+    });
+    ws.onClose(function(data) {
+      console.log('Ws connection closed')
+    });
 
     return ws;
   }
 
+  function send(data) {
+    ws.send(data);
+  }
+
   return {
-    init: init
+    init: init,
+    send: send
   }
 }])
 
-.controller('ChatCtrl', ['$scope', '$rootScope', '$http', '$websocket', 'mySockets', 'userS',
-  function($scope, $rootScope, $http, $websocket, mySockets, userS) {
+.controller('ChatCtrl', ['$scope', '$rootScope', '$http', 'mySockets', 'userS',
+  function($scope, $rootScope, $http, mySockets, userS) {
     loadUsers();
 
     $scope.messages = [];
@@ -52,9 +60,12 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket'])
         var type = envelope[0];
         var message = envelope[1].data;
 
+        console.log(envelope);
         if (type == 'new_message') {
-          console.log(message);
           $scope.messages.push(message);
+        }
+        if (type == 'websocket_rails.ping') {
+          mySockets.send(["websocket_rails.pong", {}]);
         }
       });
     }
