@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.chat', ['ngRoute', 'angular-websocket'])
+angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/chat', {

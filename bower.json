@@ -12,6 +12,7 @@
     "angular-mocks": "~1.4.0",
     "html5-boilerplate": "~5.2.0",
     "ng-token-auth": "~0.0.28",
-    "angular-websocket": "~1.0.14"
+    "angular-websocket": "~1.0.14",
+    "angular-scroll-glue": "~2.0.6"
   }
 }
