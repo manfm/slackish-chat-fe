@@ -29,10 +29,12 @@ angular.module('myApp', [
 
     checkUserLogged();
   }])
-  .factory('checkUserLogged', ['$rootScope', '$location', '$auth', function($rootScope, $location, $auth) {
+  .factory('checkUserLogged', ['$rootScope', '$location', '$auth', 'userS', function($rootScope, $location, $auth, userS) {
     return function() {
       $auth.validateUser().then(function(data) {
         if (data) {
+          userS.add($auth.retrieveData('auth_headers').client);
+
           $rootScope.logged = true;
           $rootScope.user = data;
           $location.path('/chat').replace();
@@ -45,4 +47,17 @@ angular.module('myApp', [
         $location.path('/login').replace();
       });
     };
-  }]);
+  }])
+  .factory('userS', function() {
+    var user = {};
+
+    var service = {};
+    service.add = function(u) {
+      user = u;
+    };
+    service.get = function(){
+      return user;
+    }
+
+    return service;
+  });
