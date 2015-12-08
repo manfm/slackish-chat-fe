@@ -17,7 +17,7 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
     var accessToken = userS.getHeaders()['access-token'];
     var client = userS.getHeaders()['client'];
 
-    ws = $websocket('ws://localhost:5000/websocket?uid='+uid+'&access-token='+accessToken+'&client='+client);
+    ws = $websocket('ws://localhost:5000/websocket?uid=' + uid + '&access-token=' + accessToken + '&client=' + client);
 
     var subscribe = ["websocket_rails.subscribe_private", {
       "data": {
@@ -46,12 +46,69 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
   }
 }])
 
-.controller('ChatCtrl', ['$scope', '$rootScope', '$http', 'mySockets', 'userS',
-  function($scope, $rootScope, $http, mySockets, userS) {
+.factory('usersService', ['userS', '$websocket', function(userS, $websocket) {
+  var users = [];
+
+  function markOnline(userId) {
+    for (var i = 0; i < users.length; i++) {
+      if (users[i].id == userId) {
+        users[i].online = true;
+      }
+    }
+  }
+
+  function markOffline(userId) {
+    for (var i = 0; i < users.length; i++) {
+      if (users[i].id == userId) {
+        users[i].online = false;
+      }
+    }
+  }
+
+  function online(ids) {
+    for (var m = 0; m < ids.length; m++) {
+      for (var n = 0; n < users.length; n++) {
+        if (users[n].id == ids[m]) {
+          users[n].online = true;
+        }
+      }
+    }
+  }
+
+  function set(u) {
+    users = u;
+    for (var i = 0; i < users.length; i++) {
+      users[i].online = false;
+    }
+  }
+
+  function getAll() {
+    return users;
+  }
+
+  return {
+    set: set,
+    getAll: getAll,
+    markOnline: markOnline,
+    markOffline: markOffline,
+    online: online
+  }
+}])
+
+.controller('ChatCtrl', ['$scope', '$rootScope', '$http', 'mySockets', 'userS', 'usersService',
+  function($scope, $rootScope, $http, mySockets, userS, usersService) {
     loadUsers();
 
     $scope.messages = [];
     $scope.messageForUser = 0;
+
+    $scope.$watch(function() {
+      return usersService.getAll();
+    }, function(newVal, oldVal) {
+      if (typeof newVal !== 'undefined') {
+        $scope.users = usersService.getAll();
+      }
+    });
 
     $scope.loadMessagesWithUser = function(user) {
       $scope.messageForUser = user;
@@ -71,6 +128,15 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
         if (type == 'websocket_rails.ping') {
           mySockets.send(["websocket_rails.pong", {}]);
         }
+        if (type == 'users_online') {
+          usersService.online(message);
+        }
+        if (type == 'user_online') {
+          usersService.markOnline(message);
+        }
+        if (type == 'user_offline') {
+          usersService.markOffline(message);
+        }
       });
     }
 
@@ -88,6 +154,7 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
     function loadUsers() {
       $http.get(REST_API_URL + '/users.json').success(function(data) {
         $scope.users = data;
+        usersService.set(data);
       });
     };
   }
