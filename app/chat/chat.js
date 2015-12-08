@@ -13,9 +13,13 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
   var ws = {};
 
   function init() {
-    ws = $websocket('ws://localhost:5000/websocket');
+    var uid = userS.getHeaders()['uid'];
+    var accessToken = userS.getHeaders()['access-token'];
+    var client = userS.getHeaders()['client'];
 
-    var subscribe = ["websocket_rails.subscribe", {
+    ws = $websocket('ws://localhost:5000/websocket?uid='+uid+'&access-token='+accessToken+'&client='+client);
+
+    var subscribe = ["websocket_rails.subscribe_private", {
       "data": {
         "channel": userS.get()
       }

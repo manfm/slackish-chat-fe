@@ -2,8 +2,8 @@
   <div class="">
     <div class="col-sm-4">
       <h2>Chat {{user.email}}</h2>
-      <div ng-repeat="user in users">
-        <span ng-click="loadMessagesWithUser(user)">{{user.email}}</span>
+      <div ng-repeat="u in users">
+        <span ng-if="u.email !== user.email" ng-click="loadMessagesWithUser(u)"><h3 style="cursor:pointer">{{u.email}}</h3></span>
       </div>
     </div>
     <div class="col-sm-8" style="height: 500px; overflow: scroll;" scroll-glue>

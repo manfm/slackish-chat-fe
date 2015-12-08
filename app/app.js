@@ -33,6 +33,7 @@ angular.module('myApp', [
     return function() {
       $auth.validateUser().then(function(data) {
         if (data) {
+          userS.addHeaders($auth.retrieveData('auth_headers'));
           userS.add($auth.retrieveData('auth_headers').client);
 
           $rootScope.logged = true;
@@ -50,13 +51,21 @@ angular.module('myApp', [
   }])
   .factory('userS', function() {
     var user = {};
+    var headers = [];
 
     var service = {};
     service.add = function(u) {
       user = u;
-    };
+    }
+    service.addHeaders = function(h) {
+      headers = h;
+    }
     service.get = function(){
       return user;
+    }
+
+    service.getHeaders = function(){
+      return headers;
     }
 
     return service;
