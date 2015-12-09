@@ -14,14 +14,31 @@
           <h3 style="cursor:pointer">{{r.name}}</h3>
         </span>
       </div>
-      <form class="form" ng-submit="createChatRoom(name)" ng-init="name = ''">
-        <input type="text" name="name" placeholder="name" ng-model="name" />
-        <button type="submit" class="submit">Create Chat Room</button>
-      </form>
+      <h3 ng-if="!newRoom" style="cursor:pointer" ng-click="initNewChatRoom()">+</h3>
+      <div ng-if="newRoom">
+        <form class="form" ng-submit="createChatRoom(newRoom)">
+          <button type="submit" class="submit">Create Chat Room</button>
+          <input type="text" name="name" placeholder="Chat Room Name" ng-model="newRoom.name" />
+          <div ng-repeat="u in newRoom.users">
+            <h4>{{u.email}}</h4>
+          </div>
+          <h3 ng-if="!newRoom.addUser" style="cursor:pointer" ng-click="newRoom.addUser = true;">+</h3>
+
+          <div ng-if="newRoom.addUser">
+            <input ng-model="user_search" placeholder="User Email">
+            <div ng-if="user_search" ng-repeat="u in users | filter:user_search">
+              <span ng-click="newRoom.users.push(u); newRoom.addUser = false;">
+                <h3 style="cursor:pointer">{{u.email}}</h3>
+              </span>
+            </div>
+          </div>
+
+        </form>
+      </div>
     </div>
     <div class="col-sm-8">
       <div>Chat with {{chatWindowTitle}}</div>
-      <div style="height: 500px; overflow: scroll;" scroll-glue>
+      <div style="height: 450px; overflow: scroll;" scroll-glue>
         <div ng-repeat="message in messages">
           <div class="message-field">
             <span class="message {{message.incomming? 'left':'right'}}">{{message.text}}</span>

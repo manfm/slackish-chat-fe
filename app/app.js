@@ -60,11 +60,10 @@ angular.module('myApp', [
     service.addHeaders = function(h) {
       headers = h;
     }
-    service.get = function(){
+    service.get = function() {
       return user;
     }
-
-    service.getHeaders = function(){
+    service.getHeaders = function() {
       return headers;
     }
 

@@ -202,15 +202,25 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
       });
     }
 
-    $scope.createChatRoom = function(name) {
-      var chatRoom = {};
-      chatRoom.name = angular.copy(name);
-      chatRoom.users = [1, 2];
+    $scope.createChatRoom = function(newChatRoom) {
+      newChatRoom.users = newChatRoom.users.map(function(u) {
+        return u.id
+      });
 
-      $http.post(REST_API_URL + '/users/' + $rootScope.user.id + '/chat_rooms.json', chatRoom).success(function(data) {
+      $http.post(REST_API_URL + '/users/' + $rootScope.user.id + '/chat_rooms.json', newChatRoom).success(function(data) {
         name = '';
         loadChatRooms();
       });
+
+      $scope.newRoom = false;
+    }
+
+    $scope.initNewChatRoom = function() {
+      $scope.newRoom = {
+        name: '',
+        users: [$scope.user],
+        addUser: false
+      };
     }
 
     function loadUsers() {
