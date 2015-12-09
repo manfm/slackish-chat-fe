@@ -95,12 +95,65 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
   }
 }])
 
-.controller('ChatCtrl', ['$scope', '$rootScope', '$http', 'mySockets', 'userS', 'usersService',
-  function($scope, $rootScope, $http, mySockets, userS, usersService) {
-    loadUsers();
+.factory('chatRoomService', ['userS', '$websocket', function(userS, $websocket) {
+  var chatRooms = [];
 
+  function init(rooms) {
+    chatRooms = rooms;
+  }
+
+  function add(chatRoom) {
+    if (getRoomById(chatRoom.id)) {
+      console.log('Duplicate chatroom id');
+      return false;
+    }
+    chatRooms.push(chatRoom);
+  }
+
+  function newMessage(id, message) {
+    getRoomById(id).messages.push(message);
+  }
+
+  function getAll() {
+    return chatRooms;
+  }
+
+  function get(id) {
+    return getRoomById(id);
+  }
+
+  function getMessages(id) {
+    return getRoomById(id).messages;
+  }
+
+  function getRoomById(id) {
+    for (var i = 0; i < chatRooms.length; i++) {
+      if (chatRooms[i].id == id) {
+        return chatRooms[i];
+      }
+    }
+  }
+
+  return {
+    init: init,
+    add: add,
+    newMessage: newMessage,
+    getAll: getAll,
+    get: get,
+    getMessages
+  }
+}])
+
+.controller('ChatCtrl', ['$scope', '$rootScope', '$http', 'mySockets', 'userS', 'usersService', 'chatRoomService',
+  function($scope, $rootScope, $http, mySockets, userS, usersService, chatRoomService) {
+    $scope.users = [];
+    $scope.chatRooms = [];
     $scope.messages = [];
-    $scope.messageForUser = 0;
+    $scope.chatWindowTitle = '';
+
+    loadUsers();
+    setTimeout(loadChatRooms, 1000);
+    setTimeout(startWebsockets, 1000);
 
     $scope.$watch(function() {
       return usersService.getAll();
@@ -110,12 +163,71 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
       }
     });
 
-    $scope.loadMessagesWithUser = function(user) {
-      $scope.messageForUser = user;
+    $scope.loadMessagesForFriend = function(user) {
+      $scope.active = {
+        type: 'friends',
+        id: user.id
+      };
+
+      $scope.chatWindowTitle = user.email;
+
       $http.get(REST_API_URL + '/users/' + $rootScope.user.id + '/friends/' + user.id + '/messages.json').success(function(data) {
         $scope.messages = data;
       });
+    }
 
+    $scope.loadMessagesForChatRoom = function(chatRoom) {
+      $scope.active = {
+        type: 'chat_rooms',
+        id: chatRoom.id
+      };
+
+      $scope.chatWindowTitle = chatRoom.name;
+      $scope.messages = chatRoomService.getMessages(chatRoom.id);
+
+      $http.get(REST_API_URL + '/users/' + $rootScope.user.id + '/chat_rooms/' + chatRoom.id + '/messages.json').success(function(data) {
+        $scope.messages = data
+        chatRoomService.get(chatRoom.id).messages = data;
+      });
+    }
+
+    $scope.sendMessage = function(message) {
+      var chatMessage = angular.copy(message);
+      chatMessage.timestamp = Date.now();
+      $scope.messages.push(chatMessage);
+
+      console.log($scope.active);
+      $http.post(REST_API_URL + '/users/' + $rootScope.user.id + '/' + $scope.active.type + '/' + $scope.active.id + '/messages.json', message).success(function(data) {
+        message.text = '';
+      });
+    }
+
+    $scope.createChatRoom = function(name) {
+      var chatRoom = {};
+      chatRoom.name = angular.copy(name);
+      chatRoom.users = [1, 2];
+
+      $http.post(REST_API_URL + '/users/' + $rootScope.user.id + '/chat_rooms.json', chatRoom).success(function(data) {
+        name = '';
+        loadChatRooms();
+      });
+    }
+
+    function loadUsers() {
+      $http.get(REST_API_URL + '/users.json').success(function(data) {
+        $scope.users = data;
+        usersService.set(data);
+      });
+    }
+
+    function loadChatRooms() {
+      $http.get(REST_API_URL + '/users/' + $rootScope.user.id + '/chat_rooms.json').success(function(data) {
+        $scope.chatRooms = data;
+        chatRoomService.init(data);
+      });
+    }
+
+    function startWebsockets() {
       mySockets.init().onMessage(function(data) {
         var envelope = JSON.parse(data.data)[0];
         var type = envelope[0];
@@ -137,24 +249,9 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
         if (type == 'user_offline') {
           usersService.markOffline(message);
         }
-      });
-    }
-
-    $scope.sendMessage = function(message) {
-      var chatMessage = angular.copy(message);
-      chatMessage.incomming = false;
-      chatMessage.timestamp = Date.now();
-      $scope.messages.push(chatMessage);
-
-      $http.post(REST_API_URL + '/users/' + $rootScope.user.id + '/friends/' + $scope.messageForUser.id + '/messages.json', message).success(function(data) {
-        message.text = '';
-      });
-    }
-
-    function loadUsers() {
-      $http.get(REST_API_URL + '/users.json').success(function(data) {
-        $scope.users = data;
-        usersService.set(data);
+        if (type == 'new_chat_room_message') {
+          chatRoomService.newMessage(message.chat_room_id, message);
+        }
       });
     };
   }

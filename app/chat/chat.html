@@ -3,17 +3,29 @@
     <div class="col-sm-4">
       <h2>Chat {{user.email}}</h2>
       <div ng-repeat="u in users">
-        <span ng-if="u.email !== user.email" ng-click="loadMessagesWithUser(u)">
+        <span ng-if="u.email !== user.email" ng-click="loadMessagesForFriend(u)">
           <h3 style="cursor:pointer">{{u.email}}</h3>
           <p ng-if="u.online">: online</p>
         </span>
       </div>
+      <h2>Chat Rooms</h2>
+      <div ng-repeat="r in chatRooms">
+        <span ng-click="loadMessagesForChatRoom(r)">
+          <h3 style="cursor:pointer">{{r.name}}</h3>
+        </span>
+      </div>
+      <form class="form" ng-submit="createChatRoom(name)" ng-init="name = ''">
+        <input type="text" name="name" placeholder="name" ng-model="name" />
+        <button type="submit" class="submit">Create Chat Room</button>
+      </form>
     </div>
-    <div class="col-sm-8" style="height: 500px; overflow: scroll;" scroll-glue>
-      <div>Chat with {{messageForUser.email}}</div>
-      <div ng-repeat="message in messages">
-        <div class="message-field">
-          <span class="message {{message.incomming? 'left':'right'}}">{{message.text}}</span>
+    <div class="col-sm-8">
+      <div>Chat with {{chatWindowTitle}}</div>
+      <div style="height: 500px; overflow: scroll;" scroll-glue>
+        <div ng-repeat="message in messages">
+          <div class="message-field">
+            <span class="message {{message.incomming? 'left':'right'}}">{{message.text}}</span>
+          </div>
         </div>
       </div>
       <form class="form-inline" ng-submit="sendMessage(messageForm)" ng-init="messageForm = {}">
