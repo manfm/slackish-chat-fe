@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('myApp.auth', ['ngRoute', 'ng-token-auth'])
-
-.config(['$routeProvider', function($routeProvider) {
+  .config(['$routeProvider', function($routeProvider) {
     $routeProvider
       .when('/login', {
         templateUrl: 'auth/login.html',

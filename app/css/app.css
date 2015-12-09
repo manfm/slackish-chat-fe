@@ -1,0 +1,33 @@
+.message-field {
+  margin: 10px;
+  overflow: hidden;
+  color: black;
+}
+.message {
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 80%;
+  background-color: lightGrey;
+}
+.message.left {
+  float: left;
+}
+.message.right {
+  float: right;
+}
+.online:before {
+    content: "\0000a0";
+    background:url(../images/online_icon.gif) no-repeat;
+    float: left;
+    padding: 5px;
+}​
+.chat-window {
+  height: 450px;
+  overflow-y: auto;
+}
+.clickable {
+  cursor:pointer;
+}
+.scrollable {
+overflow-y: auto;
+}

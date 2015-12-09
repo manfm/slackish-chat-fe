@@ -1,295 +1,256 @@
-
 /* CSS Document */
 
-
 body {
-	background:url(../images/bg.png) no-repeat fixed;
-	-o-background-size: cover;
-	-moz-background-size: cover;
-	-webkit-background-size:cover;
-	background-size: cover;
-	line-height: 1;
+  background: url(../images/bg.png) no-repeat fixed;
+  -o-background-size: cover;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  background-size: cover;
+  line-height: 1;
+  color: white;
 }
 ol, ul {
-	list-style: none;
+  list-style: none;
 }
 blockquote, q {
-	quotes: none;
+  quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before, blockquote:after, q:before, q:after {
+  content: '';
+  content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
-
-h1, h2, h3, h4, h5, h6
-{
-	font-family: 'Roboto Slab', serif;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto Slab', serif;
 }
-p, span
-{
-	font-family: 'Open Sans', sans-serif;
+p, span {
+  font-family: 'Open Sans', sans-serif;
 }
 
 /* Header */
 
-.header
-{
-	width: 100%;
+.header {
+  width: 100%;
 }
-.logo
-{
-	float: left;
+.logo {
+  float: left;
 }
-.logo h1
-{
-	font-size: 30px;
-	color: #16b1b5;
-	font-family: 'Roboto Slab', serif;
-	font-weight: 400;
-	padding: 25.5px;
+.logo h1 {
+  font-size: 30px;
+  color: #16b1b5;
+  font-family: 'Roboto Slab', serif;
+  font-weight: 400;
+  padding: 25.5px;
 }
-.menu
-{
-	float: right;
+.menu {
+  float: right;
 }
 .show-menu {
-	font-family: 'Open Sans', sans-serif;
-	text-decoration: none;
-	color: #fff;
-	background: #16b1b5;
-	text-align: center;
-	padding: 15px 0;
-	display: none;
+  font-family: 'Open Sans', sans-serif;
+  text-decoration: none;
+  color: #fff;
+  background: #16b1b5;
+  text-align: center;
+  padding: 15px 0;
+  display: none;
 }
 
 /*Hide checkbox*/
-input[type=checkbox]{
-    display: none;
+
+input[type=checkbox] {
+  display: none;
 }
 
 /*Show menu when invisible checkbox is checked*/
-input[type=checkbox]:checked ~ #menu{
-    display: block;
-}
-ul.nav li
-{
-		float: left;
-		margin: 0 15px;
-		padding: 33px 0px;
-}
-ul.nav li a
-{
-	font-family: 'Open Sans', sans-serif;
-	font-size: 14px;
-	font-weight: 600;
-	text-decoration: none;
-	color: #fff;
-	display: block;
-}
-ul.nav li a:hover
-{
-	color: #16b1b5;
-}
-ul.nav li a.active
-{
-	color: #16b1b5;
-}
 
-h2
-{
-	color: #fff;
-	font-size: 30px;
-	font-weight: 300;
-	line-height: 1.5;
+input[type=checkbox]:checked ~ #menu {
+  display: block;
 }
-h2 span
-{
-	font-weight: 400;
+ul.nav li {
+  float: left;
+  margin: 0 15px;
+  padding: 33px 0px;
 }
-p.under-tagline
-{
-	color: #FFF;
-	font-size: 18px;
-	line-height: 30px;
-	font-weight: 300;
-	margin-top: 25px;
+ul.nav li a {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  display: block;
 }
-button.mainbutton
-{
-	background: none repeat scroll 0% 0% transparent;
-	border: 1px solid rgba(255, 255, 255, 0.2);
-	padding: 10px 25px;
-	color: #FFF;
-	text-transform: uppercase;
-	font-size: 14px;
-	font-family: "Roboto Slab",serif;
-	font-weight: 300;
-	transition: all 0.3s ease 0s;
-	border-radius: 3px;
-	margin-top: 25px;
-	cursor: pointer;
+ul.nav li a:hover {
+  color: #16b1b5;
 }
-button.mainbutton:hover
-{
-	background: #fff;
-	color: #888;
+ul.nav li a.active {
+  color: #16b1b5;
 }
-.services
-{
-	width: 100%;
-	background: url(../images/texture-bg.png) repeat;
-	float: left;
+h2 {
+  color: silver;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1.5;
 }
-.section-head
-{
-	padding: 100px 0px 80px 25.5px;
+h2 span {
+  font-weight: 400;
 }
-.section-head h3
-{
-	color: #000;
-	font-size: 30px;
-	font-weight: 300;
+p.under-tagline {
+  color: #FFF;
+  font-size: 18px;
+  line-height: 30px;
+  font-weight: 300;
+  margin-top: 25px;
 }
-.section-head h3 span
-{
-	font-weight: 400;
+button.mainbutton {
+  background: none repeat scroll 0% 0% transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 15px 25px;
+  color: #FFF;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-family: "Roboto Slab", serif;
+  font-weight: 300;
+  transition: all 0.3s ease 0s;
+  border-radius: 3px;
+  margin-top: 25px;
+  cursor: pointer;
 }
-.section-head p
-{
-	color: #737373;
-	font-size: 14px;
-	width: 60%;
-	font-family: 'Open Sans', sans-serif;
-	line-height: 20px;
-	margin-top: 15px;
+button.mainbutton:hover {
+  background: #fff;
+  color: #888;
 }
-.service-icon
-{
-	width: 96px;
-	height: 100px;
-	display: inline-block;
-	vertical-align: middle;
-	background: url(../images/services.png) no-repeat;
-	padding-bottom: 30px;
-	box-shadow: 0px 4px 0px 0px #CCC;
+.services {
+  width: 100%;
+  background: url(../images/texture-bg.png) repeat;
+  float: left;
 }
-
-.contact
-{
-	float: left;
-	width: 100%;
+.section-head {
+  padding: 100px 0px 80px 25.5px;
 }
-.contact-section
-{
-	float: left;
-	padding-bottom: 100px;
+.section-head h3 {
+  color: #000;
+  font-size: 30px;
+  font-weight: 300;
 }
-.contact-form
-{
-	width: 600px;
-	float: left;
+.section-head h3 span {
+  font-weight: 400;
 }
-form input
-{
-	background: none repeat scroll 0% 0% #F7F6F6;
-	padding-bottom: 15px;
-	padding-left: 15px;
-	width: 80%;
-	border-radius: 0px;
-	box-shadow: none;
-	padding-top: 15px;
-	font-size: 16px;
-	border: 2px solid #F7F6F6;
-	font-weight: 300;
-	margin-top: 20px;
+.section-head p {
+  color: #737373;
+  font-size: 14px;
+  width: 60%;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 20px;
+  margin-top: 15px;
 }
-form textarea
-{
-	width: 100%;
-    border-radius: 0px;
-    box-shadow: none;
-    background: none repeat scroll 0% 0% #F7F6F6;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    font-size: 16px;
-    padding-left: 15px;
-    font-weight: 400;
-    height: 180px;
-    border: 2px solid #F7F6F6;
-	margin-top: 20px;
-	font-family: inherit;
+.service-icon {
+  width: 96px;
+  height: 100px;
+  display: inline-block;
+  vertical-align: middle;
+  background: url(../images/services.png) no-repeat;
+  padding-bottom: 30px;
+  box-shadow: 0px 4px 0px 0px #CCC;
 }
-button.submit
-{
-	background: none repeat scroll 0% 0% #16B1B5;
-border: medium none;
-color: #FFF;
-width: 20%;
-padding: 15px 0px;
-font-size: 18px;
-text-transform: uppercase;
-font-weight: 300;
-font-family: "Open Sans",sans-serif;
-transition: all 0.3s ease 0s;
-margin-top: 20px;
-transition: background 0.3s ease-in;
-cursor: pointer;
+.contact {
+  float: left;
+  width: 100%;
 }
-button.submit:hover
-{
-	background: none repeat scroll 0% 0% #0a8a8d;
+.contact-section {
+  float: left;
+  padding-bottom: 100px;
 }
-.contact-details
-{
-	float: left;
-	margin-left: 100px;
-	width: 500px;
+.contact-form {
+  width: 600px;
+  float: left;
 }
-.contact-details p
-{
-	font-size: 14px;
-	margin-top: 16px;
-	line-height: 20px
+form input {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding-bottom: 15px;
+  padding-left: 15px;
+  width: 80%;
+  border-radius: 3px;
+  box-shadow: none;
+  padding-top: 15px;
+  font-size: 16px;
+  border: 1px solid #F7F6F6;
+  font-weight: 300;
+  margin-top: 20px;
 }
-.contact-details p.address
-{
-	background:url(../images/loc.png) no-repeat;
-	padding-left: 35px;
-	color: #737373;
+form textarea {
+  width: 100%;
+  border-radius: 0px;
+  box-shadow: none;
+  background: none repeat scroll 0% 0% #F7F6F6;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 16px;
+  padding-left: 15px;
+  font-weight: 400;
+  height: 180px;
+  border: 2px solid #F7F6F6;
+  margin-top: 20px;
+  font-family: inherit;
 }
-.contact-details p.tel
-{
-	background:url(../images/tel.png) no-repeat;
-	padding-left: 35px;
-	color: #737373;
+button.submit {
+  background: none repeat scroll 0% 0% #16B1B5;
+  border: medium none;
+  color: #FFF;
+  width: 20%;
+  padding: 15px 0px;
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: 300;
+  font-family: "Open Sans", sans-serif;
+  transition: all 0.3s ease 0s;
+  margin-top: 20px;
+  transition: background 0.3s ease-in;
+  cursor: pointer;
 }
-.contact-details p.mail
-{
-	background:url(../images/mail.png) no-repeat;
-	padding-left: 35px;
-	color: #737373;
+button.submit:hover {
+  background: none repeat scroll 0% 0% #0a8a8d;
 }
-.footer
-{
-	width: 100%;
-	/*background-color: #373A42;*/
-	float: left;
-	margin-top: 20px;
-	text-align: center;
+.contact-details {
+  float: left;
+  margin-left: 100px;
+  width: 500px;
+}
+.contact-details p {
+  font-size: 14px;
+  margin-top: 16px;
+  line-height: 20px
+}
+.contact-details p.address {
+  background: url(../images/loc.png) no-repeat;
+  padding-left: 35px;
+  color: #737373;
+}
+.contact-details p.tel {
+  background: url(../images/tel.png) no-repeat;
+  padding-left: 35px;
+  color: #737373;
+}
+.contact-details p.mail {
+  background: url(../images/mail.png) no-repeat;
+  padding-left: 35px;
+  color: #737373;
+}
+.footer {
+  width: 100%;
+  float: left;
+  margin-top: 20px;
+  text-align: center;
 }
 .footer p.copyright {
-    color: #585C65;
-    font-weight: 300;
-    font-size: 14px;
+  color: #373b44;
+  font-weight: 300;
+  font-size: 14px;
 }
-.footer p.copyright a
-{
-	color: #585C65;
-	text-decoration: none;
-	border-bottom: 1px dotted #585c65;
+.footer p.copyright a {
+  color: #373b44;
+  text-decoration: none;
+  border-bottom: 1px dotted #373b44;
 }

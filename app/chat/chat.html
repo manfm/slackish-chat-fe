@@ -1,55 +1,59 @@
 <div class="row">
   <div class="">
-    <div class="col-sm-4">
-      <h2>Chat {{user.email}}</h2>
-      <div ng-repeat="u in users">
-        <span ng-if="u.email !== user.email" ng-click="loadMessagesForFriend(u)">
-          <h3 style="cursor:pointer">{{u.email}}</h3>
-          <p ng-if="u.online">: online</p>
-        </span>
+    <div class="col-xs-4">
+      <h2>Users</h2>
+      <div class="scrollable">
+        <div ng-repeat="u in users">
+          <span ng-if="u.email !== user.email" ng-click="loadMessagesForFriend(u)">
+            <div ng-if="u.online" class="online"></div>
+            <h3 class="clickable">{{u.email}}</h3>
+          </span>
+        </div>
       </div>
       <h2>Chat Rooms</h2>
-      <div ng-repeat="r in chatRooms">
-        <span ng-click="loadMessagesForChatRoom(r)">
-          <h3 style="cursor:pointer">{{r.name}}</h3>
-        </span>
+      <div class="scrollable">
+        <div ng-repeat="r in chatRooms">
+          <span ng-click="loadMessagesForChatRoom(r)">
+            <h3 class="clickable">{{r.name}}</h3>
+          </span>
+        </div>
       </div>
-      <h3 ng-if="!newRoom" style="cursor:pointer" ng-click="initNewChatRoom()">+</h3>
+      <h3 ng-if="!newRoom" class="clickable" title="Create Chat Room" ng-click="initNewChatRoom()">+</h3>
       <div ng-if="newRoom">
+        <hr/>
         <form class="form" ng-submit="createChatRoom(newRoom)">
-          <button type="submit" class="submit">Create Chat Room</button>
+          <button type="submit" class="mainbutton">Create Chat Room</button>
           <input type="text" name="name" placeholder="Chat Room Name" ng-model="newRoom.name" />
-          <div ng-repeat="u in newRoom.users">
+          <div ng-repeat="u in newRoom.users" title="Users inviter to Chat Room">
             <h4>{{u.email}}</h4>
           </div>
-          <h3 ng-if="!newRoom.addUser" style="cursor:pointer" ng-click="newRoom.addUser = true;">+</h3>
-
+          <h3 ng-if="!newRoom.addUser" title="Invite User" class="clickable" ng-click="newRoom.addUser = true;">+</h3>
           <div ng-if="newRoom.addUser">
-            <input ng-model="user_search" placeholder="User Email">
+            <input ng-model="user_search" placeholder="Find User by email" autofocus>
             <div ng-if="user_search" ng-repeat="u in users | filter:user_search">
               <span ng-click="newRoom.users.push(u); newRoom.addUser = false;">
-                <h3 style="cursor:pointer">{{u.email}}</h3>
+                <h4 class="clickable" title="Select {{u.email}}">{{u.email}}</h4>
               </span>
             </div>
           </div>
-
         </form>
       </div>
     </div>
-    <div class="col-sm-8">
-      <div>Chat with {{chatWindowTitle}}</div>
-      <div style="height: 450px; overflow: scroll;" scroll-glue>
-        <div ng-repeat="message in messages">
-          <div class="message-field">
-            <span class="message {{message.incomming? 'left':'right'}}">{{message.text}}</span>
+    <div class="col-xs-8">
+      <div ng-if="chatWindowTitle">
+        <h2>{{chatWindowTitle}}</h2>
+        <div class="chat-window" scroll-glue>
+          <div ng-repeat="message in messages">
+            <div class="message-field">
+              <span class="message {{message.incomming? 'left':'right'}}">{{message.text}}</span>
+            </div>
           </div>
         </div>
+        <form class="form-inline" ng-submit="sendMessage(messageForm)" ng-init="messageForm = {}">
+          <input type="text" name="text" placeholder="message" ng-model="messageForm.text" />
+          <button type="submit" class="mainbutton">Send</button>
+        </form>
       </div>
-      <form class="form-inline" ng-submit="sendMessage(messageForm)" ng-init="messageForm = {}">
-        <input type="text" name="text" placeholder="message" ng-model="messageForm.text" />
-        <button type="submit" class="submit">Send Message</button>
-        <button class="mainbutton">Request A Quote</button>
-      </form>
     </div>
   </div>
 </div>
