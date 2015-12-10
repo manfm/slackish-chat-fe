@@ -11,57 +11,63 @@ angular.module('myApp', [
   ])
   .config(['$routeProvider', function($routeProvider) {
     $routeProvider.otherwise({
-      redirectTo: '/auth'
+      redirectTo: '/chat'
     });
   }])
-  .run(['checkUserLogged', '$rootScope', function(checkUserLogged, $rootScope) {
+  .run(['$rootScope', '$auth', 'userService', '$location', 'validateUser', function($rootScope, $auth, userService, $location, validateUser) {
     $rootScope.$on('auth:registration-email-success', function(ev, user) {
-      checkUserLogged();
+      checkUser();
     });
 
     $rootScope.$on('auth:login-success', function(ev, user) {
-      checkUserLogged();
+      checkUser();
     });
 
     $rootScope.$on('auth:logout-success', function(ev) {
-      checkUserLogged();
+      checkUser();
     });
 
-    checkUserLogged();
-  }])
-  .factory('checkUserLogged', ['$rootScope', '$location', '$auth', 'userS', function($rootScope, $location, $auth, userS) {
-    return function() {
-      $auth.validateUser().then(function(data) {
-        if (data) {
-          userS.addHeaders($auth.retrieveData('auth_headers'));
-          userS.add($auth.retrieveData('auth_headers').client);
-
-          $rootScope.logged = true;
-          $rootScope.user = data;
+    function checkUser() {
+      validateUser().then(function(logged) {
+        if (logged) {
           $location.path('/chat').replace();
         } else {
-          $rootScope.logged = false;
           $location.path('/login').replace();
         }
-      }).catch(function() {
-        $rootScope.logged = false;
+      }, function(error) {
         $location.path('/login').replace();
+      }).then(function() {
+        $rootScope.current_user = userService.getUser();
       });
     };
+
   }])
-  .factory('userS', function() {
+  .factory('validateUser', ['$auth', 'userService', function($auth, userService) {
+    return function() {
+      return $auth.validateUser().then(function(data) {
+        userService.setUser(data);
+        userService.setHeaders($auth.retrieveData('auth_headers'));
+        return true;
+      }, function(error) {
+        userService.setUser(null);
+        userService.setHeaders(null);
+        return false;
+      });
+    }
+  }])
+  .factory('userService', function() {
     var user = {};
     var headers = [];
 
     var service = {};
-    service.add = function(u) {
+    service.setUser = function(u) {
       user = u;
     }
-    service.addHeaders = function(h) {
-      headers = h;
-    }
-    service.get = function() {
+    service.getUser = function() {
       return user;
+    }
+    service.setHeaders = function(h) {
+      headers = h;
     }
     service.getHeaders = function() {
       return headers;

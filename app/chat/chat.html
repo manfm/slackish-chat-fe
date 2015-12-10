@@ -4,7 +4,7 @@
       <h2>Users</h2>
       <div class="scrollable">
         <div ng-repeat="u in users">
-          <span ng-if="u.email !== user.email" ng-click="loadMessagesForFriend(u)">
+          <span ng-if="u.email !== current_user.email" ng-click="loadMessagesForFriend(u)">
             <div ng-if="u.online" class="online"></div>
             <h3 class="clickable">{{u.email}}</h3>
           </span>
@@ -12,7 +12,7 @@
       </div>
       <h2>Chat Rooms</h2>
       <div class="scrollable">
-        <div ng-repeat="r in chatRooms">
+        <div ng-repeat="r in chatRooms | orderBy:'-last_message_at'">
           <span ng-click="loadMessagesForChatRoom(r)">
             <h3 class="clickable">{{r.name}}</h3>
           </span>
