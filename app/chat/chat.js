@@ -134,7 +134,14 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
         // console.log(envelope);
         switch (type) {
           case 'new_message':
-            $scope.messages.push(message);
+            if (message.incomming) {
+              $scope.messages.push(message);
+            }
+            break;
+          case 'new_chat_room_message':
+            if (message.incomming) {
+              chatRoomService.newMessage(message.chat_room_id, message);
+            }
             break;
           case 'users_online':
             usersService.online(message);
@@ -144,9 +151,6 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
             break;
           case 'user_offline':
             usersService.markOffline(message);
-            break;
-          case 'new_chat_room_message':
-            chatRoomService.newMessage(message.chat_room_id, message);
             break;
         }
       });
