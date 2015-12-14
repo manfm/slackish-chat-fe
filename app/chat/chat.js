@@ -98,11 +98,9 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
       });
 
       restService.createChatRoom(newChatRoom).then(function(response) {
-        name = '';
+        $scope.newRoom = false;
         loadChatRooms();
       });
-
-      $scope.newRoom = false;
     }
 
     $scope.initNewChatRoom = function() {

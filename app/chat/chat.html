@@ -22,7 +22,7 @@
       <div ng-if="newRoom">
         <hr/>
         <form class="form" ng-submit="createChatRoom(newRoom)">
-          <button type="submit" class="mainbutton">Create Chat Room</button>
+          <button ng-if="newRoom.users.length > 1" type="submit" class="mainbutton">Create Chat Room</button>
           <input type="text" name="name" placeholder="Chat Room Name" ng-model="newRoom.name" />
           <div ng-repeat="u in newRoom.users" title="Users inviter to Chat Room">
             <h4>{{u.email}}</h4>
