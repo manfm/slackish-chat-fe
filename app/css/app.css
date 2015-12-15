@@ -15,19 +15,32 @@
 .message.right {
   float: right;
 }
-.online:before {
-    content: "\0000a0";
-    background:url(../images/online_icon.gif) no-repeat;
-    float: left;
-    padding: 5px;
-}​
-.chat-window {
-  height: 450px;
-  overflow-y: auto;
+.online::before {
+  content: "\0000a0";
+  background: url(../images/online_icon.gif) no-repeat;
+  float: left;
+  padding: 5px;
 }
 .clickable {
-  cursor:pointer;
+  cursor: pointer;
 }
 .scrollable {
-overflow-y: auto;
+  overflow-y: auto;
+}
+.chat-window {
+  height: 450px;
+}
+.user-window {
+  height: 600px;
+}
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
 }

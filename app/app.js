@@ -1,8 +1,8 @@
 'use strict';
 
 var REST_API_URL = (typeof REST_API_URL !== 'undefined') ? REST_API_URL : 'http://localhost:5000';
+var WEBSOCKET_URL = (typeof WEBSOCKET_URL !== 'undefined') ? WEBSOCKET_URL : 'ws://localhost:5000/websocket';
 
-// Declare app level module which depends on views, and components
 angular.module('myApp', [
     'ngRoute',
     'myApp.auth',
@@ -56,8 +56,8 @@ angular.module('myApp', [
     }
   }])
   .factory('userService', function() {
-    var user = {};
-    var headers = [];
+    var user = {}; // Main User objact shared in all app
+    var headers = []; // Header date from rest API is used for websockets
 
     var service = {};
     service.setUser = function(u) {

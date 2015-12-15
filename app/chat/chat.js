@@ -11,6 +11,7 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
 
 .controller('ChatCtrl', ['$scope', '$rootScope', 'mySockets', 'userService', 'usersService', 'chatRoomService', 'restService', 'validateUser', '$location',
   function($scope, $rootScope, mySockets, userService, usersService, chatRoomService, restService, validateUser, $location) {
+    // Check if user is logged
     validateUser().then(function(logged) {
       if (logged) {
         init()
@@ -23,6 +24,7 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
       $rootScope.current_user = userService.getUser();
     });
 
+    // Basic init of chat app
     function init() {
       $scope.users = [];
       $scope.chatRooms = [];
@@ -42,7 +44,7 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
         }
       });
 
-      // keep chatRooms last_message_at in sync
+      // keep chatRooms order (last_message_at) in sync
       $scope.$watch(function() {
         return chatRoomService.getAll();
       }, function(newVal, oldVal) {
@@ -52,6 +54,7 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
       });
     }
 
+    // private message
     $scope.loadMessagesForFriend = function(user) {
       $scope.active = {
         type: 'friends',
@@ -71,7 +74,11 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
         id: chatRoom.id
       };
 
-      $scope.chatWindowTitle = chatRoom.name;
+      var participants = "";
+      for (var i = 0; i < chatRoom.users.length; i++) {
+        participants += " " + chatRoom.users[i].email;
+      }
+      $scope.chatWindowTitle = chatRoom.name + " (" + participants + ")";
 
       $scope.messages = chatRoomService.get(chatRoom.id).messages;
 
@@ -81,6 +88,7 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
       });
     }
 
+    // send is universal chot chatRoomMessage and for PrivateMessage with friend. Type of message is decided by $scope.active
     $scope.sendMessage = function(message) {
       var chatMessage = angular.copy(message);
       chatMessage.timestamp = Date.now();
@@ -103,6 +111,7 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
       });
     }
 
+    // Prepare form for new chatRoom
     $scope.initNewChatRoom = function() {
       $scope.newRoom = {
         name: '',
@@ -129,7 +138,6 @@ angular.module('myApp.chat', ['ngRoute', 'angular-websocket', 'luegg.directives'
         var type = envelope[0];
         var message = envelope[1].data;
 
-        // console.log(envelope);
         switch (type) {
           case 'new_message':
             if (message.incomming) {
